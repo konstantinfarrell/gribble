@@ -33,7 +33,8 @@ $(document).ready(function(e){
         'width': '100%',
         'height': '100%',
         'background-color': '#111',
-        'overflow': 'hidden'
+        'overflow': 'hidden',
+        'position': 'absolute'
     });
 
     // Now define the variables for each cell.
@@ -44,6 +45,14 @@ $(document).ready(function(e){
 
     // Here's our main function.
     function gribble(x, y){
+        var name = gribset(x,y);
+        // Now pause for a bit before
+        setTimeout(function(){
+            shunt(name);
+        }, memory);
+    }
+
+    function gribset(x,y){
         // From the x,y coordinates, grab the nearest
         // grid space and make sure there isn't something
         // in that space already. (We dont need to stack,
@@ -55,7 +64,7 @@ $(document).ready(function(e){
         if(exists == null){
             $("body").append("<div id='"+name+"'></div>");
             $("#"+name).css({'display': 'none'});
-            $("#"+name).fadeIn(100).promise();
+            $("#"+name).fadeIn(200).promise();
         }
 
         // Now add the color, place the square,
@@ -71,25 +80,44 @@ $(document).ready(function(e){
             'width': size[0]-3,
             'height': size[1]-3
         });
-
-        // Now pause for a bit before
-        // picking a direction, and animating
-        // the movement of the square to the outside
-        // of the page.
-        // Once that is done, remove it.
-        setTimeout(function(){
-            var d = goDirection();
-            var direction = d[0];
-            var magnitude = d[1];
-            var animation = {};
-            var time = Math.floor(Math.random() * 600 + 300);
-            animation[direction] = magnitude;
-            $("#"+name).animate(animation,time).promise().done(function(){
-                $("#"+name).remove();
-            });
-
-        }, memory);
+        return name;
     }
+
+    // Pick a direction, and animate the
+    // movement of the square to the outside
+    // of the page. Once that is done, remove it.
+    function shunt(name){
+        var d = goDirection();
+        var direction = d[0];
+        var magnitude = d[1];
+        var animation = {};
+        var time = Math.floor(Math.random() * 600 + 300);
+        animation[direction] = magnitude;
+        $("#"+name).animate(animation,time).promise().done(function(){
+            $("#"+name).remove();
+        });
+    }
+
+    /*
+    function gribbilation(x, y, times){
+        var name = gribset(x,y);
+
+        var times = times-1;
+
+        if(times < 0){
+            gribbilation(x+size[0],y, times);
+            gribbilation(x,y+size[1], times);
+            gribbilation(x-size[0],y, times);
+            gribbilation(x,y-size[1], times);
+
+            gribbilation(x+size[0],y+size[1], times);
+            gribbilation(x+size[0],y-size[1], times);
+            gribbilation(x-size[0],y+size[1], times);
+            gribbilation(x-size[0],y-size[1], times);
+        }
+        $("#"+name).fadeOut(100).promise();
+    }
+    */
 
     // Also let users click to add a square.
     $(document).click(function(e){
@@ -103,7 +131,7 @@ $(document).ready(function(e){
     function demo_gribble(){
         var x = Math.floor(Math.random()* $(document).width());
         var y = Math.floor(Math.random()* $(document).height());
-        var time = Math.floor(Math.random() * 750 + 50);
+        var time = Math.floor(Math.random() * 450 + 50);
         gribble(x,y);
         setTimeout(function(){
             demo_gribble();
