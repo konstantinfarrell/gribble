@@ -28,6 +28,7 @@ $(document).ready(function(e){
         return Math.floor(Math.random()*256);
     }
 
+    // Append the container divs to the body and pretty them up with some css.
     $('body').append("<div id='grib-container'><div id='grib'></div></div>");
     function css(){
         $('body').css('overflow', 'hidden');
@@ -48,24 +49,31 @@ $(document).ready(function(e){
     }
     css();
 
+    // Now define the variables for each cell.
+    // Note that memory only applies to cells that have been clicked.
     var size = [30, 30];
     var num = [$(document).width()/size[0], $(document).height()/size[1]];
     var memory = 3000;
 
+    // Here's our main function.
     function gribble(x, y){
+        // From the x,y coordinates, grab the nearest
+        // grid space and make sure there isn't something
+        // in that space already. (We dont need to stack,
+        // layers, just change the color of the last one)
         var index_X = Math.floor(x/size[0]);
         var index_Y = Math.floor(y/size[1]);
         var name = index_X + "_" + index_Y + "_cell";
         var exists = document.getElementById(name);
-
-        if(!exists){
+        if(exists == null){
             $("#grib").append("<div id='"+name+"'></div>");
             $("#"+name).css({'display': 'none'});
             $("#"+name).fadeIn(100).promise();
         }
 
+        // Now add the color, place the square,
+        // and pretty it up with some css.
         var color = toCSS(rcv(), rcv(), rcv());
-
         $("#"+name).css({
             'position': 'absolute',
             'background-color': color,
@@ -77,6 +85,11 @@ $(document).ready(function(e){
             'height': size[1]-3
         });
 
+        // Now pause for a bit before
+        // picking a direction, and animating
+        // the movement of the square to the outside
+        // of the page.
+        // Once that is done, remove it.
         setTimeout(function(){
             var d = goDirection();
             var direction = d[0];
@@ -91,12 +104,15 @@ $(document).ready(function(e){
         }, memory);
     }
 
+    // Also let users click to add a square.
     $("#grib").click(function(e){
         var x = e.clientX;
         var y = e.clientY;
         gribble(x, y);
     });
 
+    // A demo function that places a square at a random
+    // location at a random time interval.
     function demo_gribble(){
         var x = Math.floor(Math.random()* $(document).width());
         var y = Math.floor(Math.random()* $(document).height());
