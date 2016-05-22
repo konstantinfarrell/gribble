@@ -98,27 +98,6 @@ $(document).ready(function(e){
         });
     }
 
-    /*
-    function gribbilation(x, y, times){
-        var name = gribset(x,y);
-
-        var times = times-1;
-
-        if(times < 0){
-            gribbilation(x+size[0],y, times);
-            gribbilation(x,y+size[1], times);
-            gribbilation(x-size[0],y, times);
-            gribbilation(x,y-size[1], times);
-
-            gribbilation(x+size[0],y+size[1], times);
-            gribbilation(x+size[0],y-size[1], times);
-            gribbilation(x-size[0],y+size[1], times);
-            gribbilation(x-size[0],y-size[1], times);
-        }
-        $("#"+name).fadeOut(100).promise();
-    }
-    */
-
     // Also let users click to add a square.
     $(document).click(function(e){
         var x = e.clientX;
