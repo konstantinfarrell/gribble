@@ -1,0 +1,13 @@
+<VirtualHost *:80>
+    ServerName example.local
+    # so wildcard DNS for any IP works (see xip.io or nip.io)
+    ServerAlias example.*
+
+    DocumentRoot /home/example/htdocs
+    ErrorLog /var/log/httpd/example.local.error_log
+    CustomLog /var/log/httpd/example.local.access_log vhost
+
+    <Directory /home/example/htdocs>
+        AllowOverride All
+    </Directory>
+</VirtualHost>
