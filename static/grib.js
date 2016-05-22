@@ -1,7 +1,6 @@
 // Now define the variables for each cell.
 // Note that memory only applies to cells that have been clicked.
-var size = [30, 30];
-//var num = [$(document).width()/size[0], $(document).height()/size[1]];
+var size = 30;
 var memory = 3000;
 
 // Take RGB values and return a CSS formatted string representation.
@@ -25,18 +24,25 @@ function goDirection(){
     } else if(num==1){
         return ['left', $(document).width()];
     } else if(num==2){
-        return ['top', -30];
+        return ['top', -100];
     } else if(num==3){
-        return ['left', -30];
+        return ['left', -100];
     }
 }
 
 function gribble(x,y){
+    var memory = Math.floor(Math.random()*2000+2000)
     // Create a gribble-tile, and shunt it.
     var name = gribset(x,y);
     // Now pause for a bit before
     setTimeout(function(){
-        shunt(name);
+        if(Math.floor(Math.random()*100)%10==0){
+            $("#"+name).fadeOut(250).promise().done(function(){
+                $("#"+name).remove();
+            });
+        } else {
+            shunt(name);
+        }
     }, memory);
 }
 
@@ -45,14 +51,14 @@ function gribset(x,y){
     // grid space and make sure there isn't something
     // in that space already. (We dont need to stack,
     // layers, just change the color of the last one)
-    var index_X = Math.floor(x/size[0]);
-    var index_Y = Math.floor(y/size[1]);
+    var index_X = Math.floor(x/size);
+    var index_Y = Math.floor(y/size);
     var name = index_X + "_" + index_Y + "_cell";
     var exists = document.getElementById(name);
     if(exists == null){
         $("body").append("<div id='"+name+"'></div>");
         $("#"+name).css({'display': 'none'});
-        $("#"+name).fadeIn(200).promise();
+        $("#"+name).fadeIn(250).promise();
     }
 
     // Now add the color, place the tile,
@@ -63,10 +69,10 @@ function gribset(x,y){
         'background-color': color,
         'box-shadow': '0 0 1px '+color,
         'border-radius': '2px',
-        'top': index_Y * size[1],
-        'left': index_X * size[0],
-        'width': size[0]-3,
-        'height': size[1]-3
+        'top': index_Y * size,
+        'left': index_X * size,
+        'width': size-3,
+        'height': size-3
     });
     return name;
 }
