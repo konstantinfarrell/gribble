@@ -28,26 +28,13 @@ $(document).ready(function(e){
         return Math.floor(Math.random()*256);
     }
 
-    // Append the container divs to the body and pretty them up with some css.
-    $('body').append("<div id='grib-container'><div id='grib'></div></div>");
-    function css(){
-        $('body').css('overflow', 'hidden');
-        $("#grib-container").css({
-            'width': '100%',
-            'height': '100%',
-            'position': 'absolute'
-        });
-
-        $("#grib").css({
-            'background-color': '#111',
-            'width': '100%',
-            'height': '100%',
-            'margin': 'auto',
-            'padding': '0',
-            'position': 'relative'
-        });
-    }
-    css();
+    // Style up the body.
+    $('body').css({
+        'width': '100%',
+        'height': '100%',
+        'background-color': '#111',
+        'overflow': 'hidden'
+    });
 
     // Now define the variables for each cell.
     // Note that memory only applies to cells that have been clicked.
@@ -66,7 +53,7 @@ $(document).ready(function(e){
         var name = index_X + "_" + index_Y + "_cell";
         var exists = document.getElementById(name);
         if(exists == null){
-            $("#grib").append("<div id='"+name+"'></div>");
+            $("body").append("<div id='"+name+"'></div>");
             $("#"+name).css({'display': 'none'});
             $("#"+name).fadeIn(100).promise();
         }
@@ -105,7 +92,7 @@ $(document).ready(function(e){
     }
 
     // Also let users click to add a square.
-    $("#grib").click(function(e){
+    $(document).click(function(e){
         var x = e.clientX;
         var y = e.clientY;
         gribble(x, y);
